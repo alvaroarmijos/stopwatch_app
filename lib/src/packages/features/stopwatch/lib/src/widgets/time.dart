@@ -11,7 +11,8 @@ class Time extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
 
     return Center(
       child: Stack(
@@ -34,7 +35,7 @@ class Time extends StatelessWidget {
             width: 160,
             height: 160,
             decoration: BoxDecoration(
-              color: AppColors.primary,
+              color: theme.colorScheme.background,
               shape: BoxShape.circle,
             ),
           ),
