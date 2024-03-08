@@ -1,45 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:stopwatch_app/src/packages/core/ui/ui.dart';
-
-import '../widgets/time.dart';
+import 'package:stopwatch_app/src/packages/features/stopwatch/lib/src/widgets/widgets.dart';
 
 class StopwatchPage extends StatelessWidget {
   const StopwatchPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Time(
-              time: '00:00',
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            color: theme.colorScheme.background,
+            padding: const EdgeInsets.symmetric(vertical: AppDimens.dimen_20),
+            child: const SafeArea(
+              child: Time(
+                time: '00:00',
+              ),
             ),
-            const SizedBox(
-              height: AppDimens.dimen_20,
+          ),
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.all(AppDimens.dimen_20),
+              itemCount: 10,
+              itemBuilder: (context, index) => const Lap(
+                index: 1,
+                time: 1.1,
+              ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+          ),
+          Container(
+            color: theme.colorScheme.background,
+            padding: const EdgeInsets.symmetric(vertical: AppDimens.dimen_20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                OutlinedButton(
+                FloatingActionButton.small(
                   onPressed: () {},
-                  child: const Text('STOP'),
+                  child: const Icon(Icons.stop),
                 ),
-                const SizedBox(
-                  width: AppDimens.dimen_24,
-                ),
-                OutlinedButton(
+                FloatingActionButton.small(
                   onPressed: () {},
-                  child: const Text('LAP'),
+                  child: const Icon(Icons.play_arrow),
                 ),
               ],
             ),
-            const SizedBox(
-              height: AppDimens.dimen_20,
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

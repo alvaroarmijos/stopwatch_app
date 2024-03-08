@@ -10,33 +10,24 @@ class AppThemes {
     background: AppColors.primaryDark,
   );
 
-  static final _outlinedButtonTheme = OutlinedButton.styleFrom(
-    foregroundColor: Colors.white,
-    backgroundColor: _colorSchemeLight.secondary,
-    side: BorderSide(
-      color: AppColors.red,
-      width: 2,
-    ),
-    padding: const EdgeInsets.symmetric(
-      vertical: AppDimens.dimen_16,
-      horizontal: AppDimens.dimen_36,
-    ),
-    textStyle: const TextStyle(
-      color: Colors.white,
-      fontWeight: FontWeight.w400,
-      fontSize: 24,
+  static final _floatingActionButtonThemeData = FloatingActionButtonThemeData(
+    backgroundColor: AppColors.primaryDark,
+    shape: RoundedRectangleBorder(
+      side: BorderSide(
+        color: AppColors.red,
+      ),
+      borderRadius: BorderRadius.circular(
+        AppDimens.dimen_8,
+      ),
     ),
   );
-
-  static final _outlinedButtonThemeData =
-      OutlinedButtonThemeData(style: _outlinedButtonTheme);
 
   static ThemeData get light {
     return ThemeData.from(
       colorScheme: _colorSchemeLight,
       useMaterial3: true,
     ).copyWith(
-      outlinedButtonTheme: _outlinedButtonThemeData,
+      floatingActionButtonTheme: _floatingActionButtonThemeData,
     );
   }
 }
