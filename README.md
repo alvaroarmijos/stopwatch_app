@@ -21,6 +21,9 @@ This is a simple stopwatch application built with Flutter and Bloc that allows u
     <img src="./docs/web.gif" / hspace="5"> 
 </p>
 
+## Running the example code
+
+This sample requires Flutter 3.16
 
 ## Getting Started
 
@@ -40,4 +43,27 @@ cd stopwatch_app
 
 ```
 flutter run
+```
+
+
+## Running Tests
+
+The test coverage of this application is 70%.
+
+<p>
+    <img src="./docs/test_coverage.png" width="800"/ hspace="5"> 
+</p>
+
+All you have to do is to run these three commands:
+
+```
+# Generate `coverage/lcov.info` file
+flutter test --coverage
+#Remove res files from coverage
+lcov --remove coverage/lcov.info "**/res/" -o coverage/lcov.info
+# Generate HTML report
+# Note: on macOS you need to have lcov installed on your system (`brew install lcov`) to use this:
+genhtml coverage/lcov.info -o coverage/html
+# Open the report
+open coverage/html/index.html
 ```
