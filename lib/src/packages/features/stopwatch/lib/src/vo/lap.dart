@@ -9,6 +9,11 @@ class Lap extends Equatable {
     required this.index,
   });
 
+  static const empty = Lap(
+    duration: Duration(),
+    index: 0,
+  );
+
   @override
   List<Object?> get props => [duration, index];
 }
