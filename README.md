@@ -1,16 +1,43 @@
-# stopwatch_app
+# Stopwatch App
 
-A new Flutter project.
+This is a simple stopwatch application built with Flutter and Bloc that allows users to track time and optionally record laps.
+
+## Features
+- **Start Stopwatch:** Users can start the stopwatch to begin tracking time.
+- **Stop Stopwatch:** Users can stop the stopwatch to end tracking time.
+- **Track Laps: Users** have the option to track laps while the stopwatch is running.
+- **Order of Laps:** Laps are recorded in the order they are tracked.
+- **Number of Laps:** Users can see how many laps have been recorded.
+- **Reset Stopwatch:** Users can reset the stopwatch, which resets all laps and overall time.
+
+## Screenshots
+<p>
+    <img src="./docs/android.gif" width="200"/ hspace="5"> 
+    <img src="./docs/ios.gif" width="200"/ hspace="5"> 
+    
+</p>
+
+<p>
+    <img src="./docs/web.gif" / hspace="5"> 
+</p>
+
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+1. Clone the repository
 
-A few resources to get you started if this is your first Flutter project:
+```
+git clone https://github.com/alvaroarmijos/stopwatch_app.git
+```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+2. Navigate into the project directory:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```
+cd stopwatch_app
+```
+
+3. Run the app:
+
+```
+flutter run
+```
