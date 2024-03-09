@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:stopwatch_app/src/packages/core/ui/ui.dart';
 
-class Lap extends StatelessWidget {
-  const Lap({
+import '../../../../../core/utils/utils.dart';
+
+class LapItem extends StatelessWidget {
+  const LapItem({
     super.key,
     required this.index,
-    required this.time,
+    required this.duration,
   });
 
   final int index;
-  final double time;
+  final Duration duration;
 
   @override
   Widget build(BuildContext context) {
+    String twoDigitHours = twoDigits(duration.inHours);
+    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60).abs());
+    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60).abs());
+    final time = "$twoDigitHours:$twoDigitMinutes:$twoDigitSeconds";
+
     return Padding(
       padding: const EdgeInsets.only(bottom: AppDimens.dimen_20),
       child: ListTile(
@@ -26,8 +33,7 @@ class Lap extends StatelessWidget {
           label: 'Lap',
         ),
         trailing: LapText(
-          value: time.toStringAsFixed(1),
-          label: 's',
+          value: time,
         ),
       ),
     );
@@ -38,7 +44,7 @@ class LapText extends StatelessWidget {
   const LapText({
     super.key,
     required this.value,
-    required this.label,
+    this.label = '',
   });
 
   final String value;

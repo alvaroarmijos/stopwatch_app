@@ -1,55 +1,127 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stopwatch_app/src/packages/core/ui/ui.dart';
+import 'package:stopwatch_app/src/packages/features/stopwatch/lib/src/bloc/stopwatch_bloc.dart';
 import 'package:stopwatch_app/src/packages/features/stopwatch/lib/src/widgets/widgets.dart';
 
-class StopwatchPage extends StatelessWidget {
+class StopwatchPage extends StatefulWidget {
   const StopwatchPage({super.key});
+
+  @override
+  State<StopwatchPage> createState() => _StopwatchPageState();
+}
+
+class _StopwatchPageState extends State<StopwatchPage>
+    with TickerProviderStateMixin {
+  late final StopwatchBloc bloc;
+  late final AnimationController _controller;
+  late final ScrollController _scrollController;
+
+  @override
+  void initState() {
+    bloc = context.read<StopwatchBloc>();
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 200),
+    );
+
+    _scrollController = ScrollController();
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            color: theme.colorScheme.background,
-            padding: const EdgeInsets.symmetric(vertical: AppDimens.dimen_20),
-            child: const SafeArea(
-              child: Time(
-                time: '00:00',
-              ),
-            ),
+      body: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(
+            maxWidth: 600,
           ),
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(AppDimens.dimen_20),
-              itemCount: 10,
-              itemBuilder: (context, index) => const Lap(
-                index: 1,
-                time: 1.1,
-              ),
-            ),
-          ),
-          Container(
-            color: theme.colorScheme.background,
-            padding: const EdgeInsets.symmetric(vertical: AppDimens.dimen_20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                FloatingActionButton.small(
-                  onPressed: () {},
-                  child: const Icon(Icons.stop),
+          child: Column(
+            children: [
+              Container(
+                color: theme.colorScheme.background,
+                padding:
+                    const EdgeInsets.symmetric(vertical: AppDimens.dimen_20),
+                child: SafeArea(
+                  child: BlocBuilder<StopwatchBloc, StopwatchState>(
+                    builder: (context, state) {
+                      return Time(
+                        duration: state.duration,
+                      );
+                    },
+                  ),
                 ),
-                FloatingActionButton.small(
-                  onPressed: () {},
-                  child: const Icon(Icons.play_arrow),
+              ),
+              Expanded(
+                child: BlocBuilder<StopwatchBloc, StopwatchState>(
+                  builder: (context, state) {
+                    return ListView.builder(
+                      controller: _scrollController,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppDimens.dimen_20,
+                      ),
+                      itemCount: state.laps.length,
+                      itemBuilder: (context, index) => LapItem(
+                        index: state.laps[index].index,
+                        duration: state.laps[index].duration,
+                      ),
+                    );
+                  },
                 ),
-              ],
-            ),
+              ),
+              Container(
+                color: theme.colorScheme.background,
+                padding:
+                    const EdgeInsets.symmetric(vertical: AppDimens.dimen_32),
+                child: BlocBuilder<StopwatchBloc, StopwatchState>(
+                  builder: (context, state) {
+                    return Row(
+                      mainAxisAlignment: state.showStopFlagButton
+                          ? MainAxisAlignment.spaceEvenly
+                          : MainAxisAlignment.center,
+                      children: [
+                        Visibility(
+                          visible: state.showStopFlagButton,
+                          child: FloatingActionButton(
+                            onPressed: () {
+                              if (state.isStoped) {
+                                bloc.add(const ResetTimerEvent());
+                              } else {
+                                bloc.add(AddLapEvent(state.duration.inSeconds));
+                              }
+                            },
+                            child: SWAnimatedIcon(
+                              status: state.isStoped,
+                              initialIcon: Icons.flag,
+                              endIcon: Icons.stop,
+                            ),
+                          ),
+                        ),
+                        FloatingActionButton(
+                          onPressed: () {
+                            if (state.canStart) {
+                              bloc.add(const StartTimerEvent());
+                              _controller.forward();
+                            } else {
+                              bloc.add(const StopTimerEvent());
+                              _controller.reverse();
+                            }
+                          },
+                          child: SWAnimatedIcon(status: !state.canStart),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
